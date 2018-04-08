@@ -1,4 +1,4 @@
-package zli.leetcode.algrithm;
+package zli.leetcode.algrithm.tobesolved;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
