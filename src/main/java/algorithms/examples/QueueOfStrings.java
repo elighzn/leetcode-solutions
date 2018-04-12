@@ -4,7 +4,7 @@ public class QueueOfStrings {
 	private Node first;
 	private Node last;
 
-	void enqueue(String item) {
+	public void enqueue(String item) {
 		Node oldLast = last;
 		last = new Node();
 		last.item = item;
@@ -16,7 +16,7 @@ public class QueueOfStrings {
 		}
 	}
 
-	String dequeue() {
+	public String dequeue() {
 		String item = null;
 		if (!isEmpty()) {
 			item = first.item;
@@ -28,11 +28,11 @@ public class QueueOfStrings {
 		return item;
 	}
 
-	boolean isEmpty() {
+	public boolean isEmpty() {
 		return first == null;
 	}
 
-	int size() {
+	public int size() {
 		int n = 0;
 		Node current = first;
 		while (current != null) {

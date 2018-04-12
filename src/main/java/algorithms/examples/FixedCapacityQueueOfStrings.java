@@ -25,28 +25,22 @@ public class FixedCapacityQueueOfStrings {
 	}
 
 	boolean isEmpty() {
-		return head < tail;
+		return head == tail;
 	}
 
 	int size() {
-		int n = 0;
-		Node current = first;
-		while (current != null) {
-			n++;
-			current = first.next;
-		}
-		return n;
+		return tail-head;
 	}
 
 	public static void main(String[] args) {
 
-		FixedCapacityQueueOfStrings stack = new FixedCapacityQueueOfStrings(10);
+		FixedCapacityQueueOfStrings queue = new FixedCapacityQueueOfStrings(10);
 		while (!StdIn.isEmpty()) {
 			String s = StdIn.readString();
 			if ("-".equals(s)) {
-				StdOut.print(stack.pop());
+				StdOut.println(queue.dequeue());
 			} else {
-				stack.push(s);
+				queue.enqueue(s);
 			}
 		}
 	}
