@@ -1,4 +1,4 @@
-package algorithms.examples;
+package algorithms.examples.stack;
 
 public class ResizingArrayStackOfStrings {
 

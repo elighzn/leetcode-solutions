@@ -1,4 +1,7 @@
-package algorithms.examples;
+package algorithms.examples.queue;
+
+import algorithms.examples.utils.StdIn;
+import algorithms.examples.utils.StdOut;
 
 public class QueueOfStrings {
 	private Node first;

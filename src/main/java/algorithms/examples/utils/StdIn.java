@@ -1,4 +1,4 @@
-package algorithms.examples;
+package algorithms.examples.utils;
 
 /******************************************************************************
  *  Compilation:  javac StdIn.java
