@@ -72,7 +72,7 @@ public class QuickUnionUF {
 		du(auuf, 2, 1);
 		du(auuf, 5, 0);
 		du(auuf, 7, 2);
-		
+
 		du(auuf, 6, 1);
 		du(auuf, 5, 0);
 		du(auuf, 7, 2);
