@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import algorithms.examples.utils.StdOut;
 
-public class Merge {
+public class Merge extends Sort {
 
 	public static void sort(Comparable[] a) {
 		Comparable[] aux = new Comparable[a.length];
@@ -40,20 +40,6 @@ public class Merge {
 				a[k] = aux[i++];
 			}
 		}
-	}
-
-	private static boolean less(Comparable v, Comparable w) {
-		boolean result = false;
-		if (v.compareTo(w) < 0) {
-			result = true;
-		}
-		return result;
-	}
-
-	private static void exch(Comparable[] a, int i, int j) {
-		Comparable swap = a[i];
-		a[i] = a[j];
-		a[j] = swap;
 	}
 
 	public static void main(String[] args) {
