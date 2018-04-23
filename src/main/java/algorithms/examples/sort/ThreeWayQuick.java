@@ -5,40 +5,32 @@ import java.util.Arrays;
 import algorithms.examples.utils.StdOut;
 import algorithms.examples.utils.StdRandom;
 
-public class Quick extends Sort {
+public class ThreeWayQuick extends Sort {
 
-	private static final int CUTOFF = 10;
-	
 	public static void sort(Comparable[] a) {
 		StdRandom.shuffle(a);
 		sort(a, 0, a.length - 1);
 	}
 
+	//Dijkstra 3-way partitioning
 	private static void sort(Comparable[] a, int lo, int hi) {
-		
 		if (hi > lo) {
-			int j = partition(a, lo, hi);
-			sort(a, lo, j - 1);
-			sort(a, j + 1, hi);
-		}
-	}
+			int lt = lo, gt = hi;
 
-	private static int partition(Comparable[] a, int lo, int hi) {
-		int i = lo, j = hi + 1;
-		while (true) {
-			while (less(a[++i], a[lo])) {
-				if (i == hi)
-					break;
+			Comparable v = a[lo];
+			int i = lo;
+			while (i <= gt) {
+				int cmp = a[i].compareTo(v);
+				if (cmp < 0)
+					exch(a, lt++, i++);
+				else if (cmp > 0)
+					exch(a, i, gt--);
+				else
+					i++;
 			}
-
-			while (less(a[lo], a[--j]));
-			
-			if (i >= j)
-				break;
-			exch(a, i, j);
+			sort(a, lo, lt - 1);
+			sort(a, gt + 1, hi);
 		}
-		exch(a, lo, j);
-		return j;
 	}
 
 	public static void main(String[] args) {
