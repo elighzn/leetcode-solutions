@@ -1,6 +1,9 @@
 package algorithms.examples.sort;
 
+import java.util.Arrays;
 import java.util.Comparator;
+
+import algorithms.examples.utils.StdOut;
 
 public class Insertion extends Sort {
 
@@ -79,5 +82,16 @@ public class Insertion extends Sort {
 			}
 		}
 		assert isSorted(a, lo, hi, comparator);
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String s = "sortexample";
+
+		Character[] charArray = s.chars().mapToObj(c -> (char) c).toArray(Character[]::new);
+		Arrays.stream(charArray).forEach(StdOut::print);
+		sort(charArray);
+		StdOut.println();
+		Arrays.stream(charArray).forEach(StdOut::print);
 	}
 }
