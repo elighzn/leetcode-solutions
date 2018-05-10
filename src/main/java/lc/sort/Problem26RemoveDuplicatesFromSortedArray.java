@@ -52,11 +52,20 @@ public class Problem26RemoveDuplicatesFromSortedArray {
 			} 
 			
 		}
+		return 0;
+	}
+	
+	public void dummy(String[] str) {
+		str[0] = "456";
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		Problem26RemoveDuplicatesFromSortedArray a = new Problem26RemoveDuplicatesFromSortedArray();
+		String[] str = {"abc", "efg"};
+		a.dummy(str);
+		System.out.println(str[0]);
 	}
 
 }
