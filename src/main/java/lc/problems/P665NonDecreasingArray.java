@@ -11,7 +11,6 @@ package lc.problems;
  * non-decreasing array by modify at most one element. Note: The n belongs to [1, 10,000].
  */
 public class P665NonDecreasingArray {
-  
   public boolean checkPossibility(int[] nums) {
     if (nums.length > 2) {
       int N = nums.length;
@@ -23,8 +22,7 @@ public class P665NonDecreasingArray {
             if (++count > 1) {
               return false;
             }
-          } else if (N > 3 && i < N - 2 && isOutOfRange(nums[i], nums[i - 1], nums[i + 2])
-              && isOutOfRange(nums[i + 1], nums[i - 1], nums[i + 2])) {
+          } else if (N > 3 && i < N - 2 && nums[i + 2] < nums[i] && nums[i + 1] < nums[i - 1]) {
             return false;
           } else {
             if (++count > 1) {
@@ -35,18 +33,6 @@ public class P665NonDecreasingArray {
       }
     }
     return true;
-  }
-
-  private boolean isOutOfRange(int number, int a, int b) {
-    int min, max;
-    if (a < b) {
-      min = a;
-      max = b;
-    } else {
-      min = b;
-      max = a;
-    }
-    return number < min || number > max;
   }
 
   public static void main(String[] args) {
