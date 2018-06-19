@@ -1,4 +1,4 @@
-package algorithms.examples.queue;
+package algorithms.examples.sort.queue;
 
 import algorithms.examples.utils.StdIn;
 import algorithms.examples.utils.StdOut;

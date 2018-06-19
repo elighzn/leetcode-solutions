@@ -1,4 +1,4 @@
-package algorithms.examples.stack;
+package algorithms.examples.sort.stack;
 
 import algorithms.examples.utils.StdIn;
 import algorithms.examples.utils.StdOut;
