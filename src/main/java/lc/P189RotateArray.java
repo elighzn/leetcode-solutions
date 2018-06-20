@@ -1,7 +1,6 @@
 package lc;
 
 import java.util.Arrays;
-import java.util.StringJoiner;
 
 /**
  * Given an array, rotate the array to the right by k steps, where k is non-negative.
@@ -24,28 +23,23 @@ import java.util.StringJoiner;
 public class P189RotateArray {
 
   public void rotate(int[] nums, int k) {
-
-    int tmp = nums[k];
-    int i = 0;
-    do {
-      nums[k] = nums[i];
-      k++;
-    } while (k < nums.length - 1) {
-      nums[i] = nums[k];
-      i++;
-      nums[k] = nums[i];
-      k++;
+    k = k % nums.length;
+    int count = 0;
+    int tmp;
+    for (int start = 0; count < nums.length; start++) {
+      int current = start;
+      tmp = nums[current];
+      do {
+        int c = nums.length - k + current;
+        int next = c >= nums.length ? c - nums.length : c;
+        nums[current] = nums[next];
+        current = next;
+        count++;
+      } while (current != start);
+      int c = start + k;
+      c = c >= nums.length ? c - nums.length : c;
+      nums[c] = tmp;
     }
-      nums[k - 1] = tmp;
-  }
-
-  private void rotateRight(int[] nums) {
-    int tmp = nums[nums.length - 1];
-    int n;
-    for (int i = nums.length - 1; i > 0; i--) {
-      nums[i] = nums[i - 1];
-    }
-    nums[0] = tmp;
   }
 
   public static void out(int[] nums) {
@@ -55,10 +49,9 @@ public class P189RotateArray {
   public static void main(String[] args) {
     // TODO Auto-generated method stub
     P189RotateArray p = new P189RotateArray();
-    int[] a = new int[] {1, 2, 3, 4, 5, 6, 7, 8};
+    int[] a = new int[] {1, 2, 3, 4, 5, 6};
     out(a);
-    p.rotate(a, 4);
+    p.rotate(a, 3);
     out(a);
   }
-
 }
