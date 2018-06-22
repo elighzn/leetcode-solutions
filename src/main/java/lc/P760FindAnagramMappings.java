@@ -1,8 +1,9 @@
 package lc;
 
 import java.util.Arrays;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 /**
@@ -39,7 +40,7 @@ public class P760FindAnagramMappings {
   public int[] anagramMappings(int[] A, int[] B) {
     int[] result = new int[A.length];
 
-    Hashtable<Integer, Queue<Integer>> indexHashtable = new Hashtable<>();
+    Map<Integer, Queue<Integer>> indexHashtable = new HashMap<>();
     for (int i = 0; i < B.length; i++) {
       int b = B[i];
       Queue<Integer> indices = indexHashtable.get(b);
@@ -51,19 +52,37 @@ public class P760FindAnagramMappings {
     }
 
     for (int i = 0; i < A.length; i++) {
-      
+      result[i] = indexHashtable.get(A[i]).poll();
     }
 
     return result;
   }
 
+  public int[] a(int[] A, int[] B) {
+    int[] res = new int[A.length];
+    for (int i = 0; i < A.length; i++) {
+      if (A[i] == -1)
+        continue;
+      for (int j = 0; j < A.length; j++) {
+        if (B[j] == -1)
+          continue;
+        if (A[i] == B[j]) {
+          res[i] = j;
+          A[i] = B[j] = -1;
+          break;
+        }
+      }
+    }
+    return res;
+  }
+
   public static void main(String[] args) {
     // TODO Auto-generated method stub
-    int[] A = new int[] {12, 28, 46, 32, 50};
-    int[] B = new int[] {50, 12, 32, 46, 28};
+    int[] A = new int[] {12, 28, 46, 32, 50, 32};
+    int[] B = new int[] {50, 12, 32, 46, 28, 32};
 
     P760FindAnagramMappings p = new P760FindAnagramMappings();
-    int[] result = p.anagramMappings(A, B);
+    int[] result = p.a(A, B);
     System.out.println(Arrays.toString(result));
   }
 
