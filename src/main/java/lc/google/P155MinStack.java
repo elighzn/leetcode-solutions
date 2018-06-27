@@ -1,5 +1,6 @@
 package lc.google;
 
+import java.util.Stack;
 import java.util.StringJoiner;
 
 /*
@@ -18,22 +19,23 @@ import java.util.StringJoiner;
  */
 public class P155MinStack {
 
+  class Node {
+    int minValue;
+    int value;
+
+    Node next;
+
+    public Node(int value) {
+      this.value = value;
+    }
+  }
+
   public class MinStack {
 
-    private static final int DEFAUT_SIZE = 8;
-
-    private int[] stack;
-    private int head;
-    private int tail;
-    private int minValue;
+    private Node top;
 
     /** initialize your data structure here. */
-    public MinStack() {
-      stack = new int[DEFAUT_SIZE];
-      head = 0;
-      tail = head;
-      minValue = Integer.MAX_VALUE;
-    }
+    public MinStack() {}
 
     /**
      * Push element x onto stack.
@@ -41,27 +43,23 @@ public class P155MinStack {
      * @param x
      */
     public void push(int x) {
-      minValue = minValue > x ? x : minValue;
-      stack[tail++] = x;
-      // double the stack size when full
-      if (tail + 1 == stack.length)
-        this.resizeStack(stack.length * 2);
+      Node node = new Node(x);
+        
+      
+      if (top==null)
+        node.minValue = x;
+      else
+        node.minValue = x < top.minValue ? x : top.minValue;
+      
+      node.next = top;
+      top = node;
     }
 
     /**
      * Removes the element on top of the stack.
      */
     public void pop() {
-      if (head < tail)
-        head++;
-      else
-        throw new RuntimeException("Stack is empty");
-
-      // resize stack to free space
-      int n = (int) stack.length / 2;
-      if (tail - head < n) {
-        this.resizeStack(n);
-      }
+      top = top.next;
     }
 
     /**
@@ -70,10 +68,7 @@ public class P155MinStack {
      * @return
      */
     public int top() {
-      if (head < tail)
-        return stack[head];
-      else
-        throw new RuntimeException("Stack is empty");
+      return top.value;
     }
 
     /**
@@ -82,23 +77,21 @@ public class P155MinStack {
      * @return
      */
     public int getMin() {
-      return minValue;
-    }
-
-    private void resizeStack(int newSize) {
-      if (newSize > tail - head) {
-        int[] temp = new int[newSize];
-        for (int i = head; i <= tail; i++) {
-          temp[i - head] = this.stack[i];
-        }
-        this.stack = temp;
-      }
+      return top.minValue;
     }
 
     public String toString() {
+      Stack<Integer> s = new Stack<>();
+
+      Node node = top;
+      while (node != null) {
+        s.push(node.value);
+
+        node = node.next;
+      }
       StringJoiner sj = new StringJoiner(", ", "[", "]");
-      for (int i = head; i < tail; i++) {
-        sj.add(String.valueOf(stack[i]));
+      while (!s.isEmpty()) {
+        sj.add(s.pop().toString());
       }
       return sj.toString();
     }
@@ -106,19 +99,37 @@ public class P155MinStack {
 
   public void run() {
     MinStack ms = new MinStack();
-    int[] nums =
-        new int[] {2, 3, 1, -5, 5, 8, 28, 12, 6, 19, -3, 0};
+    int[] nums = new int[] {2, 3, 1, -5, 5, 8, 28, 12, 6, 19, -3, 0};
 
     for (int a : nums) {
       ms.push(a);
     }
 
-    while (true) {
+    while (ms.top != null) {
       String msg =
           String.format("Pop: %d, min: %d, Stack: %s", ms.top(), ms.getMin(), ms.toString());
       System.out.println(msg);
       ms.pop();
     }
+
+  }
+
+  public void run2() {
+    MinStack ms = new MinStack();
+
+    ms.push(-2);
+    System.out.println(String.format("%s, min: %d", ms.toString(), ms.getMin()));
+
+    ms.push(0);
+    System.out.println(String.format("%s, min: %d", ms.toString(), ms.getMin()));
+    ms.push(-3);
+    System.out.println(String.format("%s, min: %d", ms.toString(), ms.getMin()));
+    ms.getMin();
+    ms.pop();
+    System.out.println(String.format("%s, min: %d", ms.toString(), ms.getMin()));
+    System.out.println(ms.top());
+    System.out.println(String.format("%s, min: %d", ms.toString(), ms.getMin()));
+    System.out.println(ms.getMin());
 
   }
 
