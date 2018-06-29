@@ -1,6 +1,6 @@
 package lc.google;
 
-import java.util.Arrays;
+import org.junit.Assert;
 
 /**
  * There are two sorted arrays nums1 and nums2 of size m and n respectively.
@@ -28,49 +28,95 @@ import java.util.Arrays;
  */
 public class P4MedianOfTwoSortedArrays {
 
-  public void findMedianSortedArrays(int[] nums1, int[] nums2) {
+  public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    return findMedianSortedArrays(nums1, nums2, 0, nums1.length - 1, 0, nums2.length - 1);
+  }
 
-    int i = 0;
-    int j = 0;
+  double findMedianSortedArrays(int[] nums1, int[] nums2, int nums1Begin, int nums1End,
+      int nums2Begin, int nums2End) {
 
-    int totalLength = nums1.length + nums2.length;
-    
-    double m_temp = (double) totalLength / 2;
-    
-    int m = (int) m_temp;
+    int nums1Length = nums1End - nums1Begin + 1;
+    int nums2Length = nums2End - nums2Begin + 1;
 
-    int[] nums = new int[totalLength];
-    while (i < nums1.length && j < nums2.length) {
-      if (nums1[i] <= nums2[j]) {
-        nums[i + j] = nums1[i];
-        i++;
+    if (nums1Length > 0 && nums2Length > 0) {
+      if (nums1[nums1End] < nums2[nums2Begin]) {
+        return getMedian(nums1, nums2, nums1Begin, nums1End, nums2Begin, nums2End);
+      } else if (nums1[nums1Begin] > nums2[nums2End]) {
+        return getMedian(nums2, nums1, nums2Begin, nums2End, nums1Begin, nums1End);
       } else {
-        nums[i + j] = nums2[j];
-        j++;
-      }
-    }
-    if (i < nums1.length)
-      for (; i < nums1.length; i++)
-        nums[i + j] = nums1[i];
+        if (nums1[nums1Begin] < nums2[nums2Begin]) {
+          nums1Begin++;
+        } else {
+          nums2Begin++;
+        }
 
-    else if (j < nums2.length) {
-      for (; j < nums1.length; j++)
-        nums[i + j] = nums2[j];
+        if (nums1[nums1End] < nums2[nums2End]) {
+          nums2End--;
+        } else {
+          nums1End--;
+        }
+        return findMedianSortedArrays(nums1, nums2, nums1Begin, nums1End, nums2Begin, nums2End);
+      }
+    } else if (nums1Length == 0 && nums2Length > 0) {
+      return getMedian(nums1, nums2, nums1Begin, nums1End, nums2Begin, nums2End);
+    } else {
+      return getMedian(nums2, nums1, nums2Begin, nums2End, nums1Begin, nums1End);
     }
-    System.out.println(Arrays.toString(nums));
+  }
+
+  private double getMedian(int[] s, int[] l, int sBegin, int sEnd, int lBegin, int lEnd) {
+    int sLength = sEnd - sBegin + 1;
+    int lLength = lEnd - lBegin + 1;
+    int totalLength = sLength + lLength;
+    double half = totalLength / 2;
+    int modulo = totalLength % 2;
+
+    int h = (int) half;
+
+    double m = h < sLength ? s[sBegin + h] : l[h - sLength + lBegin];
+
+    if (modulo > 0) {
+      return m;
+    } else {
+      int h2 = h - 1;
+      double m2 = h2 < sLength ? s[sBegin + h2] : l[h2 - sLength + lBegin];
+      return 0.5 * (m + m2);
+    }
   }
 
   public static void main(String[] args) {
     P4MedianOfTwoSortedArrays p = new P4MedianOfTwoSortedArrays();
+    double median;
+
+    median = p.findMedianSortedArrays(new int[] {1, 2}, new int[] {3});
+    System.out.println(median);
+    Assert.assertTrue(median == 2);
+
+    median = p.findMedianSortedArrays(new int[] {1}, new int[] {});
+    System.out.println(median);
+    Assert.assertTrue(median == 1);
+
+    median = p.findMedianSortedArrays(new int[] {}, new int[] {1});
+    System.out.println(median);
+    Assert.assertTrue(median == 1);
 
 
-    p.findMedianSortedArrays(new int[] {1, 2}, new int[] {3, 4});
-
-    double a = (double) 5 / 2;
-    System.out.println(a);
-    System.out.println(Long.toBinaryString(Double.doubleToRawLongBits(a)));
+    median = p.findMedianSortedArrays(new int[] {1, 2}, new int[] {3, 4});
+    System.out.println(median);
+    Assert.assertTrue(median == 2.5);
 
 
 
+    median = p.findMedianSortedArrays(new int[] {1, 3}, new int[] {2, 4});
+    System.out.println(median);
+    Assert.assertTrue(median == 2.5);
+
+    median = p.findMedianSortedArrays(new int[] {1, 4}, new int[] {2, 3});
+    System.out.println(median);
+    Assert.assertTrue(median == 2.5);
+
+    median = p.findMedianSortedArrays(new int[] {1, 4}, new int[] {2, 3, 5, 6, 7, 8, 9});
+    System.out.println(median);
+    Assert.assertTrue(median == 5);
   }
 }
