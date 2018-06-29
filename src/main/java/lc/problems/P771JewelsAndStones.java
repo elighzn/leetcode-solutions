@@ -1,4 +1,4 @@
-package lc;
+package lc.problems;
 
 import java.util.HashMap;
 import java.util.HashSet;

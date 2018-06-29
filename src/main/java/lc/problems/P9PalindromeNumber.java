@@ -1,4 +1,4 @@
-package lc;
+package lc.problems;
 
 /*
  * Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same
