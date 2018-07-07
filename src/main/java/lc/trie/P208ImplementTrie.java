@@ -1,7 +1,6 @@
 package lc.trie;
 
-import java.util.HashSet;
-import java.util.Set;
+import algorithms.tries.Trie;
 
 /**
  * @author sfumato
@@ -34,44 +33,81 @@ public class P208ImplementTrie {
 
   public class Trie {
 
-    Set<Node> initial;
+    private static final int OFFSET = 97;
+    private static final int TRIE_SIZE = 27;
+    private static final int WORD_END_INDICATOR_INDEX = TRIE_SIZE - 1;
+
+    private Node root = new Node();
 
     public void insert(String word) {
-      initial = new HashSet<>();
+      root = insert(root, word, 0);
+    }
+
+    private Node insert(Node x, String word, int d) {
+      if (x == null) {
+        x = new Node();
+      }
+      if (d == word.length()) {
+        if (x.next[WORD_END_INDICATOR_INDEX] == null) {
+          x.next[WORD_END_INDICATOR_INDEX] = new Node();
+        }
+        return x;
+      }
+
+      char c = word.charAt(d);
+      int i = c - OFFSET;
+      x.next[i] = insert(x.next[i], word, d + 1);
+      return x;
     }
 
     public boolean search(String word) {
-      
-      return false;
+      return search(root, word, 0);
     }
+
+    private boolean search(Node x, String word, int d) {
+      if (x == null)
+        return false;
+      if (d == word.length())
+        return x.next[WORD_END_INDICATOR_INDEX] != null;
+      int i = word.charAt(d) - OFFSET;
+      return search(x.next[i], word, d + 1);
+    }
+
 
     public boolean startsWith(String word) {
-      
-      if (initial.contains(word.indexOf(0)))
-      
-      
-      return false;
+      return startsWith(root, word, 0);
     }
 
-    private void a() {
-      
+    private boolean startsWith(Node x, String word, int d) {
+      if (x == null)
+        return false;
+      if (d == word.length())
+        return true;
+      int i = word.charAt(d) - OFFSET;
+      return startsWith(x.next[i], word, d + 1);
     }
-
   }
 
-  public class Node {
-    char value;
-    Set<Node> children;
+  private static class Node {
+    private Node[] next = new Node[27];
+  }
 
-    public Node(char value) {
-      this.value = value;
-      children = new HashSet<>();
-    }
+  public void run() {
+    Trie trie = new Trie();
+
+    trie.insert("apple");
+    System.out.println(trie.search("apple")); // returns true
+    System.out.println(trie.search("app")); // returns false
+    System.out.println(trie.startsWith("app")); // returns true
+    trie.insert("app");
+    System.out.println(trie.search("app")); // returns true
+
+    System.out.println();
   }
 
   public static void main(String[] args) {
-    // TODO Auto-generated method stub
-
+    P208ImplementTrie p = new P208ImplementTrie();
+    p.run();
   }
 
 }
