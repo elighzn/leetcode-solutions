@@ -44,14 +44,12 @@ import org.junit.Assert;
  */
 public class P6ZigZagConversion {
 
-  Character[][] strs;
-
   public String convert(String s, int numRows) {
     if (numRows < 2) {
       return s;
     }
     int n = s.length() / (numRows - 1) + 1;
-    strs = new Character[numRows][];
+    Character[][] strs = new Character[numRows][];
 
     for (int i = 0; i < strs.length; i++) {
       strs[i] = new Character[n];

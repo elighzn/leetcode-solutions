@@ -14,13 +14,11 @@ import org.junit.Assert;
  */
 public class P11ContainerWithMostWater implements Solution {
 
-  public int maxArea(int[] height) {
-
-  }
-
-  private int getArea(int left, int right, int distance) {
-    return distance * Math.min(left, right);
-  }
+  
+  
+//  public int maxArea(int[] height) {
+//    
+//  }
 
   public static void main(String[] args) {
     // TODO Auto-generated method stub
@@ -32,9 +30,11 @@ public class P11ContainerWithMostWater implements Solution {
   public void run() {
     // TODO Auto-generated method stub
 
-    int[] heights = new int[] {1, 3, 5, 8, 2, 5, 9};
-
-    Assert.assertEquals(1, maxArea(heights));
+//    int[] heights = new int[] {1, 3, 5, 8, 2, 5, 9};
+//
+//    Assert.assertEquals(1, maxArea(heights));
+    
+    System.out.println(Integer.MAX_VALUE/10);
   }
 
 }
