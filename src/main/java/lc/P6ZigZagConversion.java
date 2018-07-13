@@ -1,5 +1,11 @@
 package lc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import org.junit.Assert;
 
 /**
@@ -14,7 +20,15 @@ import org.junit.Assert;
  * 
  *         string convert(string s, int numRows); Example 1:
  * 
- *         Input: s = "PAYPALISHIRING", numRows = 3 Output: "PAHNAPLSIIGYIR" Example 2:
+ *         Input: s = "PAYPALISHIRING", numRows = 3 Output: "PAHNAPLSIIGYIR"
+ * 
+ *         P A H N
+ * 
+ *         A P L S I I G
+ * 
+ *         Y I R
+ * 
+ *         Example 2:
  * 
  *         Input: s = "PAYPALISHIRING", numRows = 4 Output: "PINALSIGYAHRPI"
  * 
@@ -30,56 +44,54 @@ import org.junit.Assert;
  */
 public class P6ZigZagConversion {
 
-  public String convert(String s, int numRows) {
+  Character[][] strs;
 
-    char[] sc = s.toCharArray();
-    if (numRows <= 1 || s.isEmpty() || sc.length <= numRows) {
+  public String convert(String s, int numRows) {
+    if (numRows < 2) {
       return s;
     }
+    int n = s.length() / (numRows - 1) + 1;
+    strs = new Character[numRows][];
 
-    int width = (sc.length - 1) / (numRows - 1);
-    int q = (sc.length - 1) % (numRows - 1);
-    width = q == 0 ? width : width + 1;
+    for (int i = 0; i < strs.length; i++) {
+      strs[i] = new Character[n];
+    }
 
-    char[][] zigzag = new char[numRows][width];
-
-    a(zigzag, width, numRows, sc);
-
-    char[] result = new char[sc.length];
-
-    int p = 0;
-
-    for (int m = 0; m < numRows; m++) {
-      for (int n = 0; n < width; n++) {
-        if (zigzag[m][n] != 0) {
-          result[p++] = zigzag[m][n];
-        }
+    int k = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < numRows; j++) {
+        strs[j][i] = s.charAt(k++);
+        if (k == s.length())
+          return a(strs);
+      }
+      i++;
+      for (int j = numRows - 2; j > 0; j--) {
+        strs[j][i] = s.charAt(k++);
+        if (k == s.length())
+          return a(strs);
       }
     }
-    return String.valueOf(result);
+    return a(strs);
   }
 
-  private void a(char[][] zigzag, int width, int numRows, char[] sc) {
-    int index = 0;
-    for (int j = 0; j < width; j++) {
-      for (int i = 0; i < numRows; i++) {
-        zigzag[i][j] = sc[index++];
-        if (index == sc.length)
-          return;
-      }
-      j++;
-      for (int i = numRows - 2; i > 0; i--) {
-        zigzag[i][j] = sc[index++];
-        if (index == sc.length)
-          return;
+  String a(Character[][] strs) {
+    String s = new String();
+    for (Character[] str : strs) {
+      for (Character c : str) {
+        if (c != null)
+          s += c;
       }
     }
+    return s;
   }
+
+
 
   public static void main(String[] args) {
     // TODO Auto-generated method stub
     P6ZigZagConversion p = new P6ZigZagConversion();
-    
+    Assert.assertEquals(p.convert("PAYPALISHIRING", 3), "PAHNAPLSIIGYIR");
+    Assert.assertEquals(p.convert("PAYPALISHIRING", 4), "PINALSIGYAHRPI");
     Assert.assertEquals("ACB", p.convert("ABC", 2));
     Assert.assertEquals("", p.convert("", 1));
     Assert.assertEquals(p.convert("A", 2), "A");
