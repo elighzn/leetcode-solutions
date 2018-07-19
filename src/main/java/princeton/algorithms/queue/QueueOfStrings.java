@@ -1,0 +1,65 @@
+package princeton.algorithms.queue;
+
+import princeton.algorithms.utils.StdIn;
+import princeton.algorithms.utils.StdOut;
+
+public class QueueOfStrings {
+	private Node first;
+	private Node last;
+
+	public void enqueue(String item) {
+		Node oldLast = last;
+		last = new Node();
+		last.item = item;
+		last.next = null;
+		if (isEmpty()) {
+			first = last;
+		} else {
+			oldLast.next = last;
+		}
+	}
+
+	public String dequeue() {
+		String item = null;
+		if (!isEmpty()) {
+			item = first.item;
+			first = first.next;
+			if (isEmpty()) {
+				last = null;
+			}
+		}
+		return item;
+	}
+
+	public boolean isEmpty() {
+		return first == null;
+	}
+
+	public int size() {
+		int n = 0;
+		Node current = first;
+		while (current != null) {
+			n++;
+			current = first.next;
+		}
+		return n;
+	}
+
+	private class Node {
+		String item;
+		Node next;
+	}
+
+	public static void main(String[] args) {
+
+		QueueOfStrings queue = new QueueOfStrings();
+		while (!StdIn.isEmpty()) {
+			String s = StdIn.readString();
+			if ("-".equals(s)) {
+				StdOut.print(queue.dequeue());
+			} else {
+				queue.enqueue(s);
+			}
+		}
+	}
+}

@@ -1,6 +1,6 @@
 package lc.trie;
 
-import algorithms.tries.Trie;
+import princeton.algorithms.tries.Trie;
 
 /**
  * @author sfumato
