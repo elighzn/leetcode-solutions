@@ -1,4 +1,4 @@
-package princeton.algorithms.collection;
+package princeton.algorithms.collection.priorityqueue;
 
 import java.util.NoSuchElementException;
 
@@ -48,7 +48,9 @@ public class UnorderedMaxPQ<Key extends Comparable<Key>> {
         max = i;
 
     exch(max, N - 1);
-    return pq[--N];
+    Key key = pq[--N];
+    pq[N] = null;
+    return key;
   }
 
   private boolean less(int i, int j) {
