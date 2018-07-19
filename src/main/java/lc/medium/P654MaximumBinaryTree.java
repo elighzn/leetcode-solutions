@@ -1,6 +1,6 @@
 package lc.medium;
 
-import java.util.NoSuchElementException;
+
 import java.util.StringJoiner;
 
 /**
@@ -10,34 +10,24 @@ import java.util.StringJoiner;
 public class P654MaximumBinaryTree {
 
   public TreeNode constructMaximumBinaryTree(int[] nums) {
-    // return constructMaximumBinaryTree(nums, 0, nums.length);
-
-   int[] indices = new int[nums.length];
-   
-   
+    TreeNode root = null;
+    for (int i : nums) {
+      root = add(root, i);
+    }
+    return root;
   }
 
-
-  private TreeNode constructMaximumBinaryTree(int[] nums, int beginIndex, int endIndex) {
-
-    if (beginIndex >= endIndex)
-      return null;
-
-    int max = getMax(nums, beginIndex, endIndex);
-
-    TreeNode node = new TreeNode(nums[max]);
-    node.left = constructMaximumBinaryTree(nums, beginIndex, max);
-    node.right = constructMaximumBinaryTree(nums, max + 1, endIndex);
-
+  TreeNode add(TreeNode node, int x) {
+    if (node == null) {
+      node = new TreeNode(x);
+    } else if (node.val > x) {
+      node.right = add(node.right, x);
+    } else {
+      TreeNode root = new TreeNode(x);
+      root.left = node;
+      return root;
+    }
     return node;
-  }
-
-  static int getMax(int[] nums, int beginIndex, int endIndex) {
-    int max = beginIndex;
-    for (int i = beginIndex + 1; i < endIndex; i++)
-      if (nums[i] > nums[max])
-        max = i;
-    return max;
   }
 
   public class TreeNode {
