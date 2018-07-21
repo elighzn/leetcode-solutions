@@ -1,6 +1,7 @@
 package lc;
 
-import java.util.StringJoiner;
+import lc.collections.BST;
+import lc.collections.TreeNode;
 
 /**
  * Invert a binary tree.
@@ -66,7 +67,7 @@ public class P226InvertBinaryTree {
 		}
 		System.out.println(bst);
 		p.invertTree(bst.getRoot());
-		
+
 		System.out.println(bst);
 	}
 
