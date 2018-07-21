@@ -1,104 +1,68 @@
 package lc.medium;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+
+import lc.collections.BST;
+import lc.collections.TreeNode;
 
 public class P173BinarySearchTreeIterator {
 
-  public class BSTIterator {
+	public class BSTIterator {
 
-    private Stack<TreeNode> stack = new Stack<>();
-    private TreeNode current;
+		Deque<TreeNode> stack;
 
-    public BSTIterator(TreeNode root) {
-      stack.clear();
-      current = init(stack, root);
-    }
+		public BSTIterator(TreeNode root) {
+			stack= new ArrayDeque<TreeNode>();
+			if (root != null) {
+				loadLeftSideOfTree(root);
+			}
+		}
 
-    private TreeNode init(Stack<TreeNode> stack, TreeNode node) {
-      stack.push(node);
-      if (node.left != null) {
-        init(stack, node.left);
-      }
-      return node;
-    }
+		private void loadLeftSideOfTree(TreeNode node) {
+			if (node != null) {
+				stack.push(node);
+				loadLeftSideOfTree(node.left);
+			}
+		}
 
-    /** @return whether we have a next smallest number */
-    public boolean hasNext() {
+		/** @return whether we have a next smallest number */
+		public boolean hasNext() {
+			return !stack.isEmpty();
+		}
 
-    }
+		/** @return the next smallest number */
+		public int next() {
+			TreeNode current = stack.pop();
+			this.loadLeftSideOfTree(current.right);
+			return current.val;
+		}
+	}
 
-    /** @return the next smallest number */
-    public int next() {
+	private BST initTree(int[] input) {
+		BST bst = new BST();
+		for (int i : input)
+			bst.add(i);
+		return bst;
+	}
 
-    }
-  }
+	public void run(int[] input) {
+		BSTIterator i = new BSTIterator(initTree(input).getRoot());
+		int j = 0;
+		while (i.hasNext()) {
+			input[j++] = i.next();
+		}
 
-  public class BST {
+		System.out.println(Arrays.toString(input));
+	}
 
-    TreeNode root;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		P173BinarySearchTreeIterator p = new P173BinarySearchTreeIterator();
+		p.run(new int[] {});
+		p.run(new int[] { 3, 9, 7, 1, 4, 5, 3, 8, 10 });
 
-    public void add(int x) {
-      root = add(root, x);
-    }
-
-    private TreeNode add(TreeNode node, int x) {
-      if (node == null) {
-        node = new TreeNode(x);
-        return node;
-      }
-      if (node.val > x) {
-        node.left = add(node.left, x);
-      } else {
-        node.right = add(node.right, x);
-      }
-      return node;
-    }
-
-    private List<Integer> toList() {
-      List<Integer> list = new ArrayList<>();
-      a(list, root);
-      return list;
-    }
-
-    private void a(List<Integer> list, TreeNode node) {
-      if (node.left != null)
-        a(list, node.left);
-      list.add(node.val);
-      if (node.right != null)
-        a(list, node.right);
-    }
-
-    public BSTIterator iterator() {
-      return new BSTIterator(root);
-    }
-  }
-
-  public class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-
-    TreeNode(int x) {
-      val = x;
-    }
-
-    public String toString() {
-      return String.valueOf(val);
-    }
-  }
-
-  public static void main(String[] args) {
-    // TODO Auto-generated method stub
-
-
-    BST bst = new BST();
-    int[] input = {3, 9, 7, 1, 4, 5, 3, 8, 10};
-    for (int i : input)
-      bst.add(i);
-
-
-  }
+	}
 
 }
