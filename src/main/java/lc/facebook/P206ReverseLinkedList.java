@@ -1,8 +1,5 @@
 package lc.facebook;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 import lc.collections.ListNode;
 import lc.collections.SinglyLinkedList;
 
