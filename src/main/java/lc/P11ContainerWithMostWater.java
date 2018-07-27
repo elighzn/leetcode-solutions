@@ -12,29 +12,33 @@ import org.junit.Assert;
  * 
  *         Note: You may not slant the container and n is at least 2.
  */
-public class P11ContainerWithMostWater implements Solution {
+public class P11ContainerWithMostWater {
 
-  
-  
-//  public int maxArea(int[] height) {
-//    
-//  }
+  public int maxArea(int[] height) {
+    if (height.length < 2)
+      return 0;
+
+    int maxRect = 0;
+    int i = 0, j = height.length - 1;
+
+    while (i < j) {
+
+      int smallHeight = height[i] < height[j] ? height[i] : height[j];
+
+      maxRect = Math.max((j-i) * smallHeight, maxRect);
+      if (height[i] < height[j])
+        i++;
+      else
+        j--;
+    }
+    return maxRect;
+  }
 
   public static void main(String[] args) {
     // TODO Auto-generated method stub
-    Solution s = new P11ContainerWithMostWater();
-    s.run();
+    P11ContainerWithMostWater p = new P11ContainerWithMostWater();
+    Assert.assertEquals(49, p.maxArea(new int[] {1, 8, 6, 2, 5, 4, 8, 3, 7}));
   }
 
-  @Override
-  public void run() {
-    // TODO Auto-generated method stub
-
-//    int[] heights = new int[] {1, 3, 5, 8, 2, 5, 9};
-//
-//    Assert.assertEquals(1, maxArea(heights));
-    
-    System.out.println(Integer.MAX_VALUE/10);
-  }
 
 }
