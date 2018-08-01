@@ -44,7 +44,7 @@ public class P3LongestSubstringWithoutRepeatingCharacter {
         new P3LongestSubstringWithoutRepeatingCharacter();
     Stopwatch timer = Stopwatch.createUnstarted();
     timer.start();
-    assert p.lengthOfLongestSubstring("abcabcebb") == 4;
+    assert p.lengthOfLongestSubstring("abcabcbb") == 3;
     timer.stop();
     System.out.println(timer.elapsed().toNanos());
   }
