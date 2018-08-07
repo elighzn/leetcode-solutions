@@ -19,8 +19,6 @@ import org.junit.Assert;
  * 
  *         MaxEndingHere is either A[i] plus the previous MaxEndingHere, or just A[i], whichever is
  *         larger.
- * 
- * 
  */
 public class P53MaximumSubarray {
   public int maxSubArray(int[] nums) {
