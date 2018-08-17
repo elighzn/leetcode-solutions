@@ -1,7 +1,7 @@
 package lc.facebook;
 
-import lc.collections.ListNode;
-import lc.collections.SinglyLinkedList;
+import lc.commons.ListNode;
+import lc.commons.SinglyLinkedList;
 
 /*Reverse a singly linked list.
 

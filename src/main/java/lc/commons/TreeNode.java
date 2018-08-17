@@ -1,4 +1,4 @@
-package lc.collections;
+package lc.commons;
 
 public class TreeNode {
   public int val;

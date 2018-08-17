@@ -1,4 +1,4 @@
-package lc.collections;
+package lc.commons;
 
 public class SinglyLinkedList {
 	ListNode head;

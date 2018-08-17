@@ -1,6 +1,6 @@
 package lc.medium;
 
-import lc.collections.ListNode;
+import lc.commons.ListNode;
 
 public class P2AddTwoNumbers {
 

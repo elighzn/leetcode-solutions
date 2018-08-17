@@ -1,4 +1,8 @@
-package linkedin;
+package linkedin.easy;
+
+import java.util.List;
+
+import lc.commons.linkedin.NestedInteger;
 
 /**
  * // This is the interface that allows for creating nested lists. // You should
@@ -32,11 +36,12 @@ public class P339NestedListWeightSum {
 
 	int depthSum(List<NestedInteger> nestedList, int depth) {
 		int total = 0;
-        for (NestedInteger ni : nestedList) 
-            total += ni.isInteger() ? ni.getInteger() * depth : depthSum(ni.getList(), depth + 1);
-        
-        return total;
+		for (NestedInteger ni : nestedList)
+			total += ni.isInteger() ? ni.getInteger() * depth : depthSum(ni.getList(), depth + 1);
+
+		return total;
 	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

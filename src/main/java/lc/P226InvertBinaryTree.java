@@ -1,7 +1,7 @@
 package lc;
 
-import lc.collections.BST;
-import lc.collections.TreeNode;
+import lc.commons.BST;
+import lc.commons.TreeNode;
 
 /**
  * Invert a binary tree.

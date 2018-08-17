@@ -1,6 +1,6 @@
 package lc.easy;
 
-import lc.collections.TreeNode;
+import lc.commons.TreeNode;
 
 public class P104MaximumDepthOfBinaryTree {
 

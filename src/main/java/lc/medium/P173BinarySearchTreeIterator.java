@@ -4,8 +4,8 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 
-import lc.collections.BST;
-import lc.collections.TreeNode;
+import lc.commons.BST;
+import lc.commons.TreeNode;
 
 public class P173BinarySearchTreeIterator {
 
