@@ -18,12 +18,23 @@ import org.junit.Assert;
 public class P646MaximumLengthOfPairChain {
 	public int findLongestChain(int[][] pairs) {
 		Arrays.sort(pairs, (a, b) -> a[1] - b[1]);
-		return 2;
+
+
+		int ll = 0, val = Integer.MIN_VALUE;
+		for (int i = 0; i < pairs.length; i++) {
+			if (pairs[i][0] > val) {
+				val = pairs[i][1];
+				ll++;}
+		}
+
+		return ll;
 	}
 
 	public static void main(String[] args) {
 		P646MaximumLengthOfPairChain p = new P646MaximumLengthOfPairChain();
 		Assert.assertEquals(2, p.findLongestChain(new int[][] { { 1, 2 }, { 2, 3 }, { 3, 4 } }));
+
+		Assert.assertEquals(2, p.findLongestChain(new int[][] { { 3, 5 }, { 6, 9 }, { 2, 7 }, { 1, 3 }, { 5, 6 } }));
 	}
 
 }
