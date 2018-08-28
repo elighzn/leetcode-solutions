@@ -1,3 +1,4 @@
+package lc.google.easy;
 import java.util.Arrays;
 
 import org.junit.Assert;
