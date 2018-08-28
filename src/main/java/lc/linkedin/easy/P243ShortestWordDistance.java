@@ -1,4 +1,4 @@
-package linkedin.easy;
+package lc.linkedin.easy;
 
 import org.junit.Assert;
 
@@ -7,7 +7,7 @@ import org.junit.Assert;
 //Example:
 //Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
 //
-//Input: word1 = “coding”, word2 = “practice”
+//Input: word1 = ï¿½codingï¿½, word2 = ï¿½practiceï¿½
 //Output: 3
 //
 //Input: word1 = "makes", word2 = "coding"

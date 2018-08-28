@@ -1,4 +1,4 @@
-package linkedin.easy;
+package lc.linkedin.easy;
 
 import java.util.List;
 

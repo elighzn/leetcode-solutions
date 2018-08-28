@@ -3,6 +3,7 @@ package lc.dynamic.medium;
 import org.junit.Assert;
 
 public class P647PalindromicSubstrings {
+
   public int countSubstrings(String s) {
     if (s == null || s.length() < 1)
       return 0;
@@ -19,9 +20,9 @@ public class P647PalindromicSubstrings {
       }
 
     for (int l = 1; l <= H1; l++) {
-      for (int i = 1; i < s.length() - l - 1; i++) {
+      for (int i = l; i < s.length() - l - 1; i++) {
         if (b[i])
-          if (s.charAt(i - l) == s.charAt(i + 1 + l))
+          if (s.charAt(i - l) == s.charAt(i + l + 1))
             total++;
           else
             b[i] = false;
@@ -34,7 +35,7 @@ public class P647PalindromicSubstrings {
     final int H2 = (s.length() - 1) / 2;
 
     for (int l = 1; l <= H2; l++) {
-      for (int i = 1; i < s.length() - l; i++) {
+      for (int i = l; i < s.length() - l; i++) {
         if (b[i]) {
           if (s.charAt(i - l) == s.charAt(i + l))
             total++;
@@ -46,11 +47,9 @@ public class P647PalindromicSubstrings {
     return total;
   }
 
-
-
   public static void main(String[] args) {
     P647PalindromicSubstrings p = new P647PalindromicSubstrings();
-    Assert.assertEquals(3, p.countSubstrings("aaaaa"));
+    Assert.assertEquals(15, p.countSubstrings("aaaaa"));
     Assert.assertEquals(3, p.countSubstrings("abc"));
     Assert.assertEquals(6, p.countSubstrings("aaa"));
 
