@@ -46,17 +46,12 @@ import org.junit.Assert;
 public class P362DesignHitCounter {
 
 	class HitCounter {
-
-		final int N = 300;
-		int lastTimestampIndex;
-		int[] timestamps;
-		int[] hitCounts;
+		int recentTS = 0;
+		Integer count;
+		Map<Integer, Integer> counterMap = new LinkedHashMap<>();
 
 		/** Initialize your data structure here. */
 		public HitCounter() {
-			timestamps = new int[N];
-			hitCounts = new int[timestamps.length];
-			lastTimestampIndex = 0;
 		}
 
 		/**
@@ -66,13 +61,13 @@ public class P362DesignHitCounter {
 		 *            - The current timestamp (in seconds granularity).
 		 */
 		public void hit(int timestamp) {
-			int index = timestamp % timestamps.length;
-			lastTimestampIndex = index;
-			if (timestamp != timestamps[index]) {
-				timestamps[index] = timestamp;
-				hitCounts[index] = 1;
-			} else
-				hitCounts[index]++;
+			if (timestamp != recentTS) {
+				count = new Integer(0);
+				recentTS = timestamp;
+			}
+			count++;
+			counterMap.put(timestamp, count);
+
 		}
 
 		/**
@@ -82,10 +77,10 @@ public class P362DesignHitCounter {
 		 *            - The current timestamp (in seconds granularity).
 		 */
 		public int getHits(int timestamp) {
-			
-			int totalHits = 0;
-			for (int c : this.hitCounts)
-				totalHits += c;
+
+			int startTS = timestamp - 300;
+			int totalHits = counterMap.entrySet().stream().filter(e -> e.getKey() > startTS).mapToInt(e -> e.getValue())
+					.sum();
 			return totalHits;
 		}
 	}
