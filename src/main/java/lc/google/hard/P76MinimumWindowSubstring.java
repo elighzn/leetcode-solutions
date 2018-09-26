@@ -67,7 +67,6 @@ public class P76MinimumWindowSubstring {
 
 		int[] ans = new int[2];
 		Map<Character, Integer> tMap = new HashMap<>();
-		tMap.containsKey('a');
 
 		for (char c : t.toCharArray())
 			tMap.put(c, 0);
