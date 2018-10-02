@@ -1,3 +1,4 @@
+package lc.facebook.medium;
 
 /**
  * @author zli
