@@ -18,8 +18,7 @@ import org.junit.Assert;
  */
 public class P357CountNumbersWithUniqueDigits {
 	public int countNumbersWithUniqueDigits(int n) {
-		if (n < 2)
-			return 0;
+		
 		int total = 0;
 
 		for (int i = 2; i <= n; i++) {
@@ -30,6 +29,8 @@ public class P357CountNumbersWithUniqueDigits {
 
 	public static void main(String[] args) {
 		P357CountNumbersWithUniqueDigits p = new P357CountNumbersWithUniqueDigits();
+		Assert.assertEquals(1, p.countNumbersWithUniqueDigits(0));
+		Assert.assertEquals(10, p.countNumbersWithUniqueDigits(1));
 		Assert.assertEquals(91, p.countNumbersWithUniqueDigits(2));
 		Assert.assertEquals(739, p.countNumbersWithUniqueDigits(3));
 		for (int i = 4; i < 10; i++)
