@@ -51,14 +51,15 @@ public class P697DegreeOfAnArray {
 
     int ans = nums.length;
 
-    for (Entry<Integer, Integer> e : count.entrySet()) {
-      if (e.getValue() == degree) {
-        int k = e.getKey();
+    for (Integer k : count.keySet()) {
+      int v = count.get(k);
+      if (degree == v) {
         int l = rightIndex.get(k) - leftIndex.get(k) + 1;
         if (l < ans)
           ans = l;
       }
     }
+
     return ans;
   }
 
