@@ -2,43 +2,44 @@ package lc.google;
 
 import java.util.LinkedList;
 import java.util.List;
+import org.junit.Assert;
 
 public class P17LetterCombinationsOfAPhoneNumber {
 
-	private String[] map = new String[] { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "xwyz" };
+  static private String[] DICT =
+      new String[] {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "xwyz"};
 
-	public List<String> letterCombinations(String digits) {
-		char[] digitss = digits.toCharArray();
-		int n = 0;
-		if (!digits.isEmpty()) {
-			n = 1;
-			for (int i = 0; i < digitss.length; i++) {
-				n *= map[digitss[i] - '0'].length();
-			}
-		}
+  public List<String> letterCombinations(String digits) {
+    List<String> ans = new LinkedList<>();
 
-		List<String> combos = new LinkedList<>();
+    if (digits == null || digits.isEmpty())
+      return ans;
 
-		for (int i = 0; i < digitss.length; i++) {
-			char d = digitss[i];
-			String mapping = map[d - '0'];
+    combo(digits.toCharArray(), 0, ans, new char[digits.length()]);
 
-			for (int j = 0; j < mapping.length(); j++) {
-				char d2 = mapping.charAt(j);
-				System.out.println(d2);
-			}
+    return ans;
+  }
 
-		}
+  void combo(char[] arr, int index, List<String> ans, char[] temp) {
+    if (index == arr.length) {
+      ans.add(new String(temp));
+      return;
+    }
 
-		return combos;
-	}
+    int k = arr[index] - '0';
+    char[] chars = DICT[k].toCharArray();
+    for (char c : chars) {
+      temp[index] = c;
+      combo(arr, index + 1, ans, temp);
+    }
+  }
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+  public static void main(String[] args) {
+    // TODO Auto-generated method stub
 
-		P17LetterCombinationsOfAPhoneNumber p = new P17LetterCombinationsOfAPhoneNumber();
-		System.out.println(p.letterCombinations("23"));
-
-	}
+    P17LetterCombinationsOfAPhoneNumber p = new P17LetterCombinationsOfAPhoneNumber();
+    Assert.assertArrayEquals(new String[] {"ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"},
+        p.letterCombinations("23").toArray(new String[0]));
+  }
 
 }
