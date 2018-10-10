@@ -2,62 +2,96 @@ package lc.medium;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class P18FourSum {
 
-  public List<List<Integer>> fourSum(int[] nums, int target) {
+	public List<List<Integer>> fourSum(int[] nums, int target) {
+		final Set<List<Integer>> ans = new HashSet<>();
+		if (nums == null || nums.length < 4)
+			return new ArrayList<>();
 
-    Arrays.sort(nums);
+		Map<Integer, List<int[]>> map = new LinkedHashMap<>();
 
-    System.out.println(Arrays.toString(nums));
+		for (int i = 0; i < nums.length - 1; i++) {
 
-    int[] p = new int[] {0, 1, 2, nums.length - 1};
+			for (int j = i + 1; j < nums.length; j++) {
 
-    int total = 0;
-    List<List<Integer>> result = new ArrayList<>();
+//				System.out.println(i + "-" + j);
+				int[] indices = new int[] { i, j };
+				int sum = nums[i] + nums[j];
 
-    for (; p[0] < nums.length - 3; p[0]++, p[1] = p[0] + 1, p[2] = p[1] + 1, p[3] =
-        nums.length - 1) {
+				List<int[]> list = map.get(sum);
+				if (list == null) {
+					list = new ArrayList<>();
+					map.put(sum, list);
+				}
+				list.add(indices);
+			}
+		}
 
-      while (p[2] < p[3]) {
-        total = sum(nums, p);
-        if (total == target) {
-          add(result, p);
-        }
-        System.out.printf("p: %s, total: %d\n", Arrays.toString(p), total);
-        if (total > target) {
-          p[3]--;
-        } else {
-          p[1]++;
-          p[2]++;
-        }
-      }
-    }
-    return result;
-  }
+		Set<Entry<Integer, List<int[]>>> es = map.entrySet();
+		List<Entry<Integer, List<int[]>>> eList = new ArrayList<>(es);
 
-  static void add(List<List<Integer>> list, int... nums) {
-    List<Integer> l = new ArrayList<>();
-    for (int i : nums)
-      l.add(i);
-    list.add(l);
-  }
+		int lo = 0, hi = eList.size() - 1;
+		Set<Integer> set = new HashSet<>();
+		while (lo <= hi) {
+			Entry<Integer, List<int[]>> e1 = eList.get(lo);
+			Entry<Integer, List<int[]>> e2 = eList.get(hi);
 
-  static int sum(int[] nums, int[] indices) {
-    int sum = 0;
-    for (int i : indices) {
-      sum += nums[i];
-    }
-    return sum;
-  }
+			int v1 = e1.getKey();
+			int v2 = e2.getKey();
+			int sum = v1 + v2;
+			if (sum == target) {
+				List<int[]> l1 = e1.getValue();
+				List<int[]> l2 = e2.getValue();
+				set.clear();
 
-  public static void main(String[] args) {
-    // TODO Auto-generated method stub
-    P18FourSum p = new P18FourSum();
-    // System.out.println(p.fourSum(new int[] {1, 0, -1, 0, -2, 2}, 0));
+				for (int[] i1 : l1) {
+					for (int[] i2 : l2) {
+						if (i1[0] != i2[0] && i1[0] != i2[1] && i1[1] != i2[0] && i1[1] != i2[1]) {
+							Integer[] arr = new Integer[] { nums[i1[0]], nums[i1[1]], nums[i2[0]], nums[i2[1]] };
+							Arrays.sort(arr);
+							ans.add(Arrays.asList(arr));
+						}
+					}
+				}
+				lo++;
+				hi--;
+			} else if (sum < target)
+				lo++;
+			else if (sum > target)
+				hi--;
+		}
 
-    System.out.println(p.fourSum(new int[] {-3, -1, 0, 2, 4, 5}, 2));
-  }
+		return new ArrayList<>(ans);
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		P18FourSum p = new P18FourSum();
+
+		// System.out.println(p.fourSum(
+		// new int[] { -500, -481, -480, -469, -437, -423, -408, -403, -397, -381, -379,
+		// -377, -353, -347, -337,
+		// -327, -313, -307, -299, -278, -265, -258, -235, -227, -225, -193, -192, -177,
+		// -176, -173, -170,
+		// -164, -162, -157, -147, -118, -115, -83, -64, -46, -36, -35, -11, 0, 0, 33,
+		// 40, 51, 54, 74, 93,
+		// 101, 104, 105, 112, 112, 116, 129, 133, 146, 152, 157, 158, 166, 177, 183,
+		// 186, 220, 263, 273,
+		// 320, 328, 332, 356, 357, 363, 372, 397, 399, 420, 422, 429, 433, 451, 464,
+		// 484, 485, 498, 499 },
+		// 2139));
+//		System.out.println(p.fourSum(new int[] { -5, 5, 4, -3, 0, 0, 4, -2 }, 8));
+//		System.out.println(p.fourSum(new int[] { 0, 0, 0, 0 }, 0));
+		System.out.println(p.fourSum(new int[] { 1, 0, -1, 0, -2, 2 }, 0));
+//		System.out.println(p.fourSum(new int[] { -3, -1, 0, 2, 4, 5 }, 2));
+	}
 
 }
