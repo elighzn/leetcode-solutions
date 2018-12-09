@@ -1,11 +1,11 @@
 package lc.google.hard;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
-
-import org.junit.Assert;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * @author zli
@@ -29,108 +29,58 @@ import org.junit.Assert;
  */
 public class P76MinimumWindowSubstring {
 
-	// public String minWindow(String s, String t) {
-	//
-	// if (s == null || t == null || s.length() < t.length())
-	// return "";
-	//
-	// Map<Character, LinkedList<Integer>> tMap = new HashMap<>();
-	//
-	// for (int i = 0; i < t.length(); i++)
-	// tMap.put(t.charAt(i), new LinkedList<>());
-	//
-	// for (int i = 0; i < s.length(); i++) {
-	// LinkedList<Integer> l = tMap.get(s.charAt(i));
-	// if (l != null)
-	// l.add(i);
-	// }
-	// int lo = -1, hi = s.length();
-	// for (LinkedList<Integer> list : tMap.values()) {
-	// if (list.isEmpty())
-	// return "";
-	//
-	// int first = list.getFirst(), last = list.getLast();
-	//
-	// if (first > lo)
-	// lo = first;
-	// if (last < hi)
-	// hi = last;
-	// }
-	//
-	// return s.substring(lo, hi);
-	// }
-
 	public String minWindow(String s, String t) {
 
-		if (s == null || t == null || s.isEmpty() || t.isEmpty() || s.length() < t.length())
-			return "";
-
-		int[] ans = new int[2];
-		Map<Character, Integer> tMap = new HashMap<>();
-
+		final Set<Character> T = new HashSet<>();
 		for (char c : t.toCharArray())
-			tMap.put(c, 0);
-		int p1 = 0, p2 = 0;
-		boolean containAllChars = false;
+			T.add(c);
 
-		int minLength = Integer.MAX_VALUE;
+		final Map<Character, Integer> countMap = new HashMap<>();
 
-		while (p1 < s.length() || p2 < p1 - t.length() || (p2 == p1) && (p2 == 0)) {
+		int lo = 0, hi = 0, minLen = Integer.MAX_VALUE;
+		String ans = "";
 
-			if (containAllChars) {
-				char c = s.charAt(p2);
-				Integer ind = tMap.get(c);
-				if (ind != null) {
-					ind--;
-					if (ind == 0) {
-						containAllChars = false;
-						int length = p1 - p2;
-						if (length < minLength) {
-							ans[0] = p2;
-							ans[1] = p1;
-							minLength = length;
+		final char[] S = s.toCharArray();
+
+		boolean containsAll = false;
+
+		while (hi < S.length) {
+			char c = S[hi];
+			if (T.contains(c)) {
+				int countHi = countMap.getOrDefault(c, 0);
+				countMap.put(c, countHi + 1);
+
+				if (!containsAll)
+					containsAll = countMap.keySet().containsAll(T);
+
+				while (lo < hi - T.size()) {
+
+					if (T.contains(S[lo])) {
+						int countLo = countMap.get(S[lo]);
+						if (countLo == 1) {
+							int len = hi - lo + 1;
+							if (len < minLen) {
+								minLen = len;
+								ans = s.substring(lo, hi + 1);
+							}
+							break;
 						}
-						// if (p2 >= p1 - t.length())
-						// break;
-						// else
-						continue;
+						countMap.put(S[lo], countLo - 1);
 					}
+					lo++;
 				}
-				p2++;
-			} else {
-				char c = s.charAt(p1);
-				Integer ind = tMap.get(c);
-				if (ind != null) {
-					tMap.put(c, ++ind);
-					containAllChars = foundAll(tMap);
-				}
-				p1++;
 			}
-		}
-		if (containAllChars) {
-			p2 = p2 > 0 ? --p2 : p2;
-			int length = p1 - p2;
-			if (length < minLength) {
-				ans[0] = p2;
-				ans[1] = p1;
-			}
+			hi++;
 		}
 
-		return s.substring(ans[0], ans[1]);
-	}
-
-	boolean foundAll(Map<Character, Integer> tMap) {
-		for (int count : tMap.values())
-			if (count == 0)
-				return false;
-		return true;
+		return ans;
 	}
 
 	public static void main(String[] args) {
 		P76MinimumWindowSubstring p = new P76MinimumWindowSubstring();
-		Assert.assertEquals("a", p.minWindow("ab", "a"));
-//		Assert.assertEquals("a", p.minWindow("a", "a"));
-//		Assert.assertEquals("BANC", p.minWindow("ADOBECODEBANC", "ABC"));
+		System.out.println(p.minWindow("ab", "a"));
+		System.out.println(p.minWindow("a", "a"));
+		System.out.println(p.minWindow("ADOBECODEBANC", "ABC"));
 	}
 
 }
