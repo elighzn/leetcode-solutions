@@ -4,59 +4,83 @@ import java.util.Map;
 import java.util.Set;
 
 public class P36ValidSudoku {
-	public boolean isValidSudoku(char[][] board) {
-		if (board == null || board.length != 9 || board[0].length != 9)
-			return false;
+  public boolean isValidSudoku(char[][] board) {
+    if (board == null || board.length != 9 || board[0].length != 9)
+      return false;
 
-		Set<Integer>[] setRows = initSet();
-		Set<Integer>[] setCols = initSet();
-		Set<Integer>[] setSqs = initSet();
+    Set<Character>[] setRows = initSet();
+    Set<Character>[] setCols = initSet();
+    Set<Character>[] setSqs = initSet();
 
-		Map<String, Integer> square = new HashMap<>();
-		int squareIndex = 0;
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				if (j % 3 == 0 || i % 3 == 0)
-					squareIndex++;
+    for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++) {
+        if (i == 2 && j == 2) {
+          System.out.println();
+        }
+        if (board[i][j] != '.'
+            && (setRows[i].contains(board[i][j]) || setCols[j].contains(board[i][j])
+                || setSqs[getSqureIndex(i, j)].contains(board[i][j])))
+          return false;
+        else {
+          setRows[i].add(board[i][j]);
+          setCols[j].add(board[i][j]);
+          setSqs[getSqureIndex(i, j)].add(board[i][j]);
+        }
+      }
+    }
+    
+    
 
-				square.put(i + "_" + j, squareIndex);
-			}
-		}
+    return true;
+  }
 
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				if (board[i][j] != '.' && (setRows[i].contains(board[i][j]) || setCols[j].contains(board[i][j])
-						|| setSqs[square.get("i" + "_" + j)].contains(board[i][j])))
-					return false;
-				else {
-					setRows[i].add(Integer.valueOf(board[i][j]));
-					setCols[j].add(Integer.valueOf(board[i][j]));
-					setSqs[square.get("i" + "_" + j)].add(Integer.valueOf(board[i][j]));
-				}
-			}
-		}
+  static Set<Character>[] initSet() {
+    Set<Character>[] sets = new Set[9];
+    for (int i = 0; i < sets.length; i++) {
+      sets[i] = new HashSet<>();
+    }
+    return sets;
+  }
 
-		return true;
-	}
+  static int getSqureIndex(int row, int col) {
+    if (row < 3) {
+      if (col < 3)
+        return 0;
+      else if (col < 6)
+        return 1;
+      else
+        return 2;
+    } else if (row < 6) {
+      if (col < 3)
+        return 3;
+      else if (col < 6)
+        return 4;
+      else
+        return 5;
+    } else {
+      if (col < 3)
+        return 6;
+      else if (col < 6)
+        return 7;
+      else
+        return 8;
+    }
+  }
 
-	static Set<Integer>[] initSet() {
-		Set<Integer>[] sets = new Set[9];
-		for (Set<Integer> set : sets)
-			set = new HashSet<>();
+  public static void main(String[] args) {
+    P36ValidSudoku p = new P36ValidSudoku();
+    char[][] input = {{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+        {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+        {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+        {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+        {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+        {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+        {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+        {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+        {'.', '.', '.', '.', '8', '.', '.', '7', '9'}};
 
-		return sets;
-	}
+    System.out.println(p.isValidSudoku(input));
 
-	public static void main(String[] args) {
-		P36ValidSudoku p = new P36ValidSudoku();
-		char[][] input = { { '5', '3', '.', '.', '7', '.', '.', '.', '.' },
-				{ '6', '.', '.', '1', '9', '5', '.', '.', '.' }, { '.', '9', '8', '.', '.', '.', '.', '6', '.' },
-				{ '8', '.', '.', '.', '6', '.', '.', '.', '3' }, { '4', '.', '.', '8', '.', '3', '.', '.', '1' },
-				{ '7', '.', '.', '.', '2', '.', '.', '.', '6' }, { '.', '6', '.', '.', '.', '.', '2', '8', '.' },
-				{ '.', '.', '.', '4', '1', '9', '.', '.', '5' }, { '.', '.', '.', '.', '8', '.', '.', '7', '9' } };
-		
-		System.out.println(p.isValidSudoku(input));
-
-	}
+  }
 
 }
