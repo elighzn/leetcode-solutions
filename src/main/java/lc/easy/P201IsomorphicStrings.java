@@ -3,23 +3,34 @@ package lc.easy;
 import org.junit.Assert;
 
 public class P201IsomorphicStrings {
-	
-	public boolean isIsomorphic(String s1, String s2) {
-        int[] m = new int[512];
-        for (int i = 0; i < s1.length(); i++) {
-            if (m[s1.charAt(i)] != m[s2.charAt(i)+256]) return false;
-            m[s1.charAt(i)] = m[s2.charAt(i)+256] = i+1;
-        }
-        return true;
-    }
-	
-	// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-	public static void main(String[] args) {
-		P201IsomorphicStrings p = new P201IsomorphicStrings();
-		Assert.assertEquals(true, p.isIsomorphic("egg", "add"));
-		Assert.assertEquals(true, p.isIsomorphic("ab", "aa"));
-		Assert.assertEquals(true, p.isIsomorphic("foo", "bar"));
-	}
+  public boolean isIsomorphic(String s, String t) {
+
+    final int L = 256;
+    char[] sMap = new char[L];
+    char[] tMap = new char[L];
+    char[] sArr = s.toCharArray();
+    char[] tArr = t.toCharArray();
+
+    for (int i = 0; i < sArr.length; i++) {
+      char sc = sArr[i];
+      char tc = tArr[i];
+      if (sMap[sc] == 0 && tMap[tc] == 0) {
+        sMap[sc] = tc;
+        tMap[tc] = sc;
+      } else if (sMap[sc] != tc || tMap[tc] != sc)
+        return false;
+    }
+    return true;
+  }
+
+  public static void main(String[] args) {
+    P201IsomorphicStrings p = new P201IsomorphicStrings();
+    Assert.assertEquals(true, p.isIsomorphic("ab", "ca"));
+    Assert.assertEquals(true, p.isIsomorphic("egg", "add"));
+    Assert.assertEquals(false, p.isIsomorphic("ab", "aa"));
+    Assert.assertEquals(false, p.isIsomorphic("foo", "bar"));
+    Assert.assertEquals(true, p.isIsomorphic("13", "42"));
+  }
 
 }

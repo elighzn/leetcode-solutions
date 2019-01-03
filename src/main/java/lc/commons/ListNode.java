@@ -31,11 +31,11 @@ public class ListNode {
     if (x > 0) {
       ListNode top = new ListNode(x % 10);
       root.next = top;
-      x/= 10;
+      x /= 10;
       while (x > 0) {
         top.next = new ListNode(x % 10);
         top = top.next;
-        x/= 10;
+        x /= 10;
       }
     }
     return root;
