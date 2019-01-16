@@ -20,6 +20,7 @@ public class P547FriendCircles {
 					if (s != v) {
 						roots[s] = v;
 						count--;
+						
 					}
 				}
 			}

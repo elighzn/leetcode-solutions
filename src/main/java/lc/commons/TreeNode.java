@@ -1,5 +1,7 @@
 package lc.commons;
 
+import java.util.StringJoiner;
+
 public class TreeNode {
 	public int val;
 	public TreeNode left;
@@ -9,23 +11,46 @@ public class TreeNode {
 		val = x;
 	}
 
-	public TreeNode TreeNode(Integer[] nums) {
-		TreeNode root = null;
-		if (nums == null || nums.length < 1)
+	/**
+	 * Inorder deserialize.
+	 * 
+	 * @param nums
+	 *            The inorder representation of the binary tree
+	 * @return The root of the tree
+	 */
+	public static TreeNode deserialize(Integer[] nums) {
+		if (nums == null || nums.length == 0)
 			return null;
 
-		TreeNode node = root;
+		return deserialize(nums, new int[1]);
+	}
 
-		for (int i = 0; i < nums.length; i++) {
-			
-		}
+	static TreeNode deserialize(Integer[] vals, int[] i) {
+		if (i[0] == vals.length)
+			return null;
+		Integer head = vals[i[0]++];
+		if (head == null)
+			return null;
 
+		TreeNode root = new TreeNode(head);
+		root.left = deserialize(vals, i);
+		root.right = deserialize(vals, i);
 		return root;
 	}
 
-	
-
 	public String toString() {
-		return String.valueOf(val);
+		StringJoiner sj = new StringJoiner(",", "[", "]");
+		inorder(this, sj);
+		return sj.toString();
+	}
+
+	void inorder(TreeNode node, StringJoiner sj) {
+		if (node == null) {
+			sj.add("null");
+			return;
+		}
+		sj.add(node.val + "");
+		inorder(node.left, sj);
+		inorder(node.right, sj);
 	}
 }
