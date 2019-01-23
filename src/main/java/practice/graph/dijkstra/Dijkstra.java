@@ -18,7 +18,7 @@ public class Dijkstra {
 		return minIndex;
 	}
 
-	void printSolution(int[] dist, int n) {
+	void printSolution(int[] dist) {
 		System.out.println("Vertex   Distance from Source");
 		for (int i = 0; i < dist.length; i++)
 			System.out.println(i + " tt " + dist[i]);
@@ -31,14 +31,14 @@ public class Dijkstra {
 	 * @param graph
 	 * @param src
 	 */
-	void dijkstra(int[][] graph, int src) {
+	int[] dijkstra(int[][] graph, int src) {
 
 		final int V = graph.length;
 		if (src < 0 || src >= V)
-			return;
+			return null;
 
 		// The output array. dist[i] will hold the shortest distance from src to i
-		int distances[] = new int[V];
+		int[] distances = new int[V];
 
 		// visited[i] will true if vertex i is included in shortest path tree or
 		// shortest distance from src to i is finalized
@@ -58,7 +58,8 @@ public class Dijkstra {
 
 			// Update distances value of the adjacent vertices of the picked vertex.
 			for (int v = 0; v < V; v++) {
-				// Update distances[v] only if is not in sptSet, there is an edge from u to v, and
+				// Update distances[v] only if is not in sptSet, there is an edge from u to v,
+				// and
 				// total weight of path from src to v through u is smaller than current value of
 				// distances[v]
 				if (!visited[v] && graph[u][v] != 0 && distances[u] != Integer.MAX_VALUE) {
@@ -68,20 +69,49 @@ public class Dijkstra {
 				}
 			}
 		}
+		return distances;
 
-		printSolution(distances, V);
+	}
+
+	public int networkDelayTime(int[][] times, int N, int K) {
+		int[][] g = new int[N][N];
+		for (int[] t : times) {
+			g[t[0] - 1][t[1] - 1] = t[2];
+			g[t[1] - 1][t[0] - 1] = t[2];
+		}
+		int[] dist = dijkstra(g, K - 1);
+		int max = -1;
+		for (int i = 0; i < dist.length; i++) {
+			if (i == K-1)
+				continue;
+			if (dist[i] == 0)
+				return -1;
+			if (dist[i] > max)
+				max = dist[i];
+		}
+		return max;
+	}
+
+	public static void run() {
+		int[][] times = new int[][] { { 2, 1, 1 }, { 2, 3, 1 }, { 3, 4, 1 } };
+		Dijkstra t = new Dijkstra();
+		System.out.println(t.networkDelayTime(times, 4, 2));
 	}
 
 	public static void main(String[] args) {
 		/* Let us create the example graph discussed above */
 		// formatter off
-		int graph[][] = new int[][] { { 0, 4, 0, 0, 0, 0, 0, 8, 0 }, { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
-				{ 0, 8, 0, 7, 0, 4, 0, 0, 2 }, { 0, 0, 7, 0, 9, 14, 0, 0, 0 }, { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
-				{ 0, 0, 4, 14, 10, 0, 2, 0, 0 }, { 0, 0, 0, 0, 0, 2, 0, 1, 6 }, { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
-				{ 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
-		// formatter on
-		Dijkstra t = new Dijkstra();
-		t.dijkstra(graph, 6);
+//		int graph[][] = new int[][] { { 0, 4, 0, 0, 0, 0, 0, 8, 0 }, { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
+//				{ 0, 8, 0, 7, 0, 4, 0, 0, 2 }, { 0, 0, 7, 0, 9, 14, 0, 0, 0 }, { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
+//				{ 0, 0, 4, 14, 10, 0, 2, 0, 0 }, { 0, 0, 0, 0, 0, 2, 0, 1, 6 }, { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
+//				{ 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
+//		// formatter on
+//		Dijkstra t = new Dijkstra();
+//		int[] dist = t.dijkstra(graph, 6);
+//		t.printSolution(dist);
+		
+		run();
+
 	}
 
 }
