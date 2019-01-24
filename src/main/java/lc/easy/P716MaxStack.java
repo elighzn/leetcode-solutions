@@ -1,75 +1,104 @@
 package lc.easy;
 
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.TreeMap;
-
 import org.junit.Assert;
 
 public class P716MaxStack {
-	class MaxStack {
-		TreeMap<Integer, Integer> max;
-		LinkedList<Integer> stack;
+    static class MaxStack {
+        TreeMap<Node, LinkedList<Node>> map = new TreeMap<>();
+        Node head, tail;
 
-		/** initialize your data structure here. */
-		public MaxStack() {
-			max = new TreeMap<>();
-			stack = new LinkedList<>();
-		}
+        /** initialize your data structure here. */
+        public MaxStack() {
+            head = new Node(0);
+            tail = new Node(0);
+            head.next = tail;
+            tail.prev = head;
+        }
 
-		public void push(int x) {
-			stack.add(x);
-			max.put(x, max.getOrDefault(x, 0) + 1);
-		}
+        private void addNode(Node node) {
+            node.next = head.next;
+            head.next.prev = node;
+            head.next = node;
+            node.prev = head;
+        }
 
-		public int pop() {
-			int e = stack.pop();
-			if (e == max.lastKey()) {
-				Map.Entry<Integer, Integer> lastEntry = max.pollLastEntry();
-				int v = lastEntry.getValue() - 1;
-				if (v > 0)
-					max.put(e, v);
-			}
-			return e;
-		}
+        private void removeNode(Node node) {
+            node.next.prev = node.prev;
+            node.prev.next = node.next;
+        }
 
-		public int top() {
-			return stack.getLast();
-		}
+        public void push(int x) {
+            Node node = new Node(x);
 
-		public int peekMax() {
-			return max.lastKey();
-		}
+            if (!map.containsKey(node))
+                map.put(node, new LinkedList<>());
+            map.get(node).addLast(node);
 
-		public int popMax() {
-			Map.Entry<Integer, Integer> lastEntry = max.lastEntry();
-			int e = lastEntry.getKey(), v = lastEntry.getValue();
-			if (v > 1)
-				max.put(e, v - 1);
+            addNode(node);
+        }
 
-			stack.removeLastOccurrence(e);
-			return e;
-		}
+        public int pop() {
+            return pop(head.next);
+        }
 
-	}
+        private int pop(Node node) {
+            removeNode(node);
+            LinkedList<Node> l = map.get(node);
+            int len = l.size();
+            if (len == 1)
+                map.remove(node);
+            else
+                l.removeLast();
 
-	public void run() {
-		MaxStack p = new MaxStack();
-		p.push(5);
-		p.push(1);
-		p.push(5);
-		Assert.assertEquals(5, p.top());
-		Assert.assertEquals(5, p.popMax());
-		Assert.assertEquals(1, p.top());
-		Assert.assertEquals(5, p.peekMax());
-		Assert.assertEquals(1, p.pop());
-		Assert.assertEquals(5, p.top());
-	}
+            return node.val;
+        }
 
-	public static void main(String[] args) {
-		P716MaxStack p = new P716MaxStack();
-		p.run();
+        public int top() {
+            return head.next.val;
+        }
 
-	}
+        public int peekMax() {
+            return map.lastKey().val;
+        }
 
+        public int popMax() {
+            Node lastMax = map.lastEntry().getValue().peekLast();
+
+            return pop(lastMax);
+        }
+    }
+
+    static class Node implements Comparable<Node> {
+        int val;
+        Node prev = null, next = null;
+
+        Node(int v) {
+            val = v;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return Integer.compare(val, o.val);
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(val);
+        }
+    }
+
+    public static void main(String[] args) {
+        MaxStack p = new MaxStack();
+        p.push(5);
+        p.push(1);
+        p.push(5);
+        Assert.assertEquals(5, p.top());
+        Assert.assertEquals(5, p.popMax());
+        Assert.assertEquals(1, p.top());
+        Assert.assertEquals(5, p.peekMax());
+        Assert.assertEquals(1, p.pop());
+        Assert.assertEquals(5, p.top());
+    }
 }
