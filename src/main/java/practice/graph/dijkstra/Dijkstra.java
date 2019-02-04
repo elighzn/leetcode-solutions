@@ -1,6 +1,11 @@
 package practice.graph.dijkstra;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Dijkstra {
 
@@ -74,6 +79,16 @@ public class Dijkstra {
 	}
 
 	public int networkDelayTime(int[][] times, int N, int K) {
+		Map<Integer, Integer> dist = networkDelayTime2(times, N, K);
+		if (dist.size() != N)
+			return -1;
+		int ans = 0;
+		for (int cand : dist.values())
+			ans = Math.max(ans, cand);
+		return ans;
+	}
+
+	public int networkDelayTime1(int[][] times, int N, int K) {
 		int[][] g = new int[N][N];
 		for (int[] t : times) {
 			g[t[0] - 1][t[1] - 1] = t[2];
@@ -82,7 +97,7 @@ public class Dijkstra {
 		int[] dist = dijkstra(g, K - 1);
 		int max = -1;
 		for (int i = 0; i < dist.length; i++) {
-			if (i == K-1)
+			if (i == K - 1)
 				continue;
 			if (dist[i] == 0)
 				return -1;
@@ -92,24 +107,60 @@ public class Dijkstra {
 		return max;
 	}
 
+	public Map<Integer, Integer> networkDelayTime2(int[][] times, int N, int K) {
+		Map<Integer, List<int[]>> graph = new HashMap<>();
+		for (int[] edge : times) {
+			if (!graph.containsKey(edge[0]))
+				graph.put(edge[0], new ArrayList<int[]>());
+			graph.get(edge[0]).add(new int[] { edge[1], edge[2] });
+		}
+		return dijkstra(graph, K);
+	}
+
+	Map<Integer, Integer> dijkstra(Map<Integer, List<int[]>> graph, int src) {
+		PriorityQueue<int[]> heap = new PriorityQueue<int[]>((info1, info2) -> info1[0] - info2[0]);
+		heap.offer(new int[] { 0, src });
+
+		Map<Integer, Integer> dist = new HashMap<>();
+		while (!heap.isEmpty()) {
+			int[] info = heap.poll();
+			int d = info[0], node = info[1];
+			if (dist.containsKey(node))
+				continue;
+			dist.put(node, d);
+			if (graph.containsKey(node))
+				for (int[] edge : graph.get(node)) {
+					int nextIndex = edge[0], d2 = edge[1];
+					if (!dist.containsKey(nextIndex))
+						heap.offer(new int[] { d + d2, nextIndex });
+				}
+		}
+		return dist;
+	}
+
 	public static void run() {
-		int[][] times = new int[][] { { 2, 1, 1 }, { 2, 3, 1 }, { 3, 4, 1 } };
+		int[][] times = new int[][] { { 3, 5, 78 }, { 2, 1, 1 }, { 1, 3, 0 }, { 4, 3, 59 }, { 5, 3, 85 }, { 5, 2, 22 },
+				{ 2, 4, 23 }, { 1, 4, 43 }, { 4, 5, 75 }, { 5, 1, 15 }, { 1, 5, 91 }, { 4, 1, 16 }, { 3, 2, 98 },
+				{ 3, 4, 22 }, { 5, 4, 31 }, { 1, 2, 0 }, { 2, 5, 4 }, { 4, 2, 51 }, { 3, 1, 36 }, { 2, 3, 59 } };
 		Dijkstra t = new Dijkstra();
-		System.out.println(t.networkDelayTime(times, 4, 2));
+		System.out.println(t.networkDelayTime(times, 5, 5));
 	}
 
 	public static void main(String[] args) {
 		/* Let us create the example graph discussed above */
 		// formatter off
-//		int graph[][] = new int[][] { { 0, 4, 0, 0, 0, 0, 0, 8, 0 }, { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
-//				{ 0, 8, 0, 7, 0, 4, 0, 0, 2 }, { 0, 0, 7, 0, 9, 14, 0, 0, 0 }, { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
-//				{ 0, 0, 4, 14, 10, 0, 2, 0, 0 }, { 0, 0, 0, 0, 0, 2, 0, 1, 6 }, { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
-//				{ 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
-//		// formatter on
-//		Dijkstra t = new Dijkstra();
-//		int[] dist = t.dijkstra(graph, 6);
-//		t.printSolution(dist);
-		
+		// int graph[][] = new int[][] { { 0, 4, 0, 0, 0, 0, 0, 8, 0 }, { 4, 0, 8, 0, 0,
+		// 0, 0, 11, 0 },
+		// { 0, 8, 0, 7, 0, 4, 0, 0, 2 }, { 0, 0, 7, 0, 9, 14, 0, 0, 0 }, { 0, 0, 0, 9,
+		// 0, 10, 0, 0, 0 },
+		// { 0, 0, 4, 14, 10, 0, 2, 0, 0 }, { 0, 0, 0, 0, 0, 2, 0, 1, 6 }, { 8, 11, 0,
+		// 0, 0, 0, 1, 0, 7 },
+		// { 0, 0, 2, 0, 0, 0, 6, 7, 0 } };
+		// // formatter on
+		// Dijkstra t = new Dijkstra();
+		// int[] dist = t.dijkstra(graph, 6);
+		// t.printSolution(dist);
+
 		run();
 
 	}
