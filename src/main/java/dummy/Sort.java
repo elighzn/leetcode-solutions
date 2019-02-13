@@ -57,16 +57,14 @@ public class Sort {
 	}
 
 	public static int partition(int[] arr, int lo, int hi) {
-		int j = lo - 1, pivot = arr[hi];
+		int j = lo, pivot = arr[hi];
 
 		for (int i = lo; i < hi; i++) {
 			if (arr[i] > pivot)
 				continue;
-
-			j++;
-			swap(arr, i, j);
+			swap(arr, i, j++);
 		}
-		swap(arr, j + 1, hi);
+		swap(arr, j, hi);
 		return j;
 	}
 
@@ -77,10 +75,16 @@ public class Sort {
 	}
 
 	public static void main(String[] args) {
-		int[] input = { 10, 80, 30, 90, 40, 50, 70 };
-		// quicksort(input);
-		mergesort(input);
+		int[] input = { 1, 1, 1, 9, 3, 2, 4, 1, 1, 8, 6, 5, 2 };
+		int p = partition(input, 0, input.length - 1);
+		System.out.println(p + ": " + Arrays.toString(input));
+		quicksort(input);
+		// mergesort(input);
 		System.out.println(Arrays.toString(input));
+
+		input = new int[] { 2 };
+		p = partition(input, 0, input.length - 1);
+		System.out.println(p + ": " + Arrays.toString(input));
 	}
 
 }

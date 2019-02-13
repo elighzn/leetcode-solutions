@@ -1,6 +1,9 @@
 package princeton.algorithms.sorting;
 
 import java.util.Arrays;
+
+import org.junit.Assert;
+
 import princeton.algorithms.utils.StdOut;
 import princeton.algorithms.utils.StdRandom;
 
@@ -23,21 +26,33 @@ public class Quick extends Sort {
 	}
 
 	private static int partition(Comparable[] a, int lo, int hi) {
-		int i = lo, j = hi + 1;
-		while (true) {
-			while (less(a[++i], a[lo])) {
-				if (i == hi)
-					break;
-			}
-
-			while (less(a[lo], a[--j]));
-			
-			if (i >= j)
-				break;
-			exch(a, i, j);
+		
+		int j = lo;
+		Comparable p = a[hi];
+		for (int i = lo; i < hi; i++) {
+			if (less(p, a[i]))
+				continue;
+			exch(a, i, j++);
 		}
-		exch(a, lo, j);
+		exch(a, j, hi);
 		return j;
+		
+//		int i = lo, j = hi + 1;
+//		
+//		while (true) {
+//			while (less(a[++i], a[lo])) {
+//				if (i == hi)
+//					break;
+//			}
+//
+//			while (less(a[lo], a[--j]));
+//			
+//			if (i >= j)
+//				break;
+//			exch(a, i, j);
+//		}
+//		exch(a, lo, j);
+//		return j;
 	}
 
 	public static void main(String[] args) {
@@ -49,5 +64,7 @@ public class Quick extends Sort {
 		sort(charArray);
 		StdOut.println();
 		Arrays.stream(charArray).forEach(StdOut::print);
+		
+//		Assert.assertEquals("aeelmoprstx", new String((char[])charArray));
 	}
 }
