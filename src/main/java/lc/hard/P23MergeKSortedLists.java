@@ -6,24 +6,35 @@ import java.util.PriorityQueue;
 import lc.commons.ListNode;
 
 public class P23MergeKSortedLists {
-	public ListNode mergeKLists(ListNode[] lists) {
-		
-		PriorityQueue<ListNode> pq = new PriorityQueue<ListNode>(lists.length, new Comparator<ListNode>() {
-			public int compare(ListNode n1, ListNode n2) {
-				return n1.val - n2.val;
+	static class Solution {
+		public ListNode mergeKLists(ListNode[] lists) {
+			return mergeLists(lists, 0, lists.length - 1);
+		}
+
+		ListNode mergeLists(ListNode[] lists, int lo, int hi) {
+			if (lo >= hi)
+				return lists[lo];
+
+			int mid = lo + (hi - lo) / 2;
+			ListNode l1 = mergeLists(lists, lo, mid);
+			ListNode l2 = mergeLists(lists, mid + 1, hi);
+			return merge(l1, l2);
+		}
+
+		ListNode merge(ListNode a, ListNode b) {
+			if (a == null)
+				return b;
+			if (b == null)
+				return a;
+
+			if (a.val < b.val) {
+				a.next = merge(a.next, b);
+				return a;
+			} else {
+				b.next = merge(a, b.next);
+				return b;
 			}
-		});
-		
-		boolean flag = allEnd(lists);
-		
-		while (!allEnd(lists)) 
-	}
-	
-	boolean allEnd(ListNode[] lists) {
-		for (ListNode node : lists)
-			if (node.next != null)
-				return false;
-		return true;
+		}
 	}
 
 	public static void main(String[] args) {

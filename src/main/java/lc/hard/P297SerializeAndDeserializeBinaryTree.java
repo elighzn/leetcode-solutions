@@ -1,6 +1,7 @@
 package lc.hard;
 
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.LinkedList;
 
 import lc.commons.TreeNode;
@@ -11,69 +12,67 @@ public class P297SerializeAndDeserializeBinaryTree {
 	 * Definition for a binary tree node. public class TreeNode { int val; TreeNode
 	 * left; TreeNode right; TreeNode(int x) { val = x; } }
 	 */
-	public class Codec {
+	static class Codec {
 
 		// Encodes a tree to a single string.
 		public String serialize(TreeNode root) {
 			StringBuilder sb = new StringBuilder();
-			inorder(root, sb);
+			se(root, sb);
 			return sb.toString();
+		}
+
+		void se(TreeNode root, StringBuilder sb) {
+			if (root == null) {
+				sb.append("#,");
+				return;
+			}
+			sb.append(root.val + ",");
+			se(root.left, sb);
+			se(root.right, sb);
 		}
 
 		// Decodes your encoded data to tree.
 		public TreeNode deserialize(String data) {
 			if (data == null || data.length() == 0)
 				return null;
+			String[] ds = data.split(",");
+			Deque<String> q = new LinkedList<>(Arrays.asList(ds));
 
-			String[] vals = data.split(" ");
-			if (vals.length == 0 || "null".equals(vals[0]))
-				return null;
-
-			return deserialize(new LinkedList<>(Arrays.asList(vals)));
+			return de(q);
 		}
 
-		TreeNode deserialize(LinkedList<String> list) {
-			String head = list.pollFirst();
-			if (head == null || "#".equals(head))
+		TreeNode de(Deque<String> q) {
+			String v = q.poll();
+			if (v == null || "#".equals(v))
 				return null;
 
-			TreeNode root = new TreeNode(Integer.valueOf(head));
-			root.left = deserialize(list);
-			root.right = deserialize(list);
-
+			TreeNode root = new TreeNode(Integer.valueOf(v));
+			root.left = de(q);
+			root.right = de(q);
 			return root;
-		}
-
-		void inorder(TreeNode node, StringBuilder sb) {
-			if (node == null) {
-				sb.append("# ");
-				return;
-			}
-
-			sb.append(node.val + " ");
-
-			inorder(node.left, sb);
-			inorder(node.right, sb);
 		}
 	}
 
 	// Your Codec object will be instantiated and called as such:
 	// Codec codec = new Codec();
 	// codec.deserialize(codec.serialize(root));
+	
 
-	public void run() {
-		TreeNode root1 = TreeNode.deserialize(new Integer[] { 1, 2, null, null, 3, 4, 5, null, null, null, null });
+	public static void main(String[] args) {
+		Integer[] ins = new Integer[] { 1, 2, null, null, 3, 4, null, null, 5, null, null };
+		Deque<String> q = new LinkedList<>();
+		for (Integer i : ins) {
+			if (i != null) q.offer(i.toString());
+			else q.offer(null);
+		}
+		
 		Codec c = new Codec();
+		TreeNode root1 = c.de(q);
 		System.out.println(root1);
 		String data = c.serialize(root1);
 		System.out.println(data);
 		TreeNode root2 = c.deserialize(data);
 		System.out.println(root2);
-	}
-
-	public static void main(String[] args) {
-		P297SerializeAndDeserializeBinaryTree p = new P297SerializeAndDeserializeBinaryTree();
-		p.run();
 	}
 
 }

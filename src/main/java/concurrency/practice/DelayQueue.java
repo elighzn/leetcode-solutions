@@ -16,7 +16,7 @@ public class DelayQueue<E extends Delayed> {
 	}
 
 	public void put(E e) {
-		final ReentrantLock lock = this.lock;
+//		final ReentrantLock lock = this.lock;
 		lock.lock();
 		try {
 			pq.offer(e);
@@ -30,7 +30,7 @@ public class DelayQueue<E extends Delayed> {
 	}
 
 	public E take() throws Exception {
-		final ReentrantLock lock = this.lock;
+//		final ReentrantLock lock = this.lock;
 		lock.lockInterruptibly();
 		try {
 			while (true) {
@@ -60,6 +60,15 @@ public class DelayQueue<E extends Delayed> {
 			if (leader == null && pq.peek() != null) {
 				available.signal();
 			}
+			lock.unlock();
+		}
+	}
+	
+	public int size() throws Exception {
+		lock.lockInterruptibly();
+		try {
+			return pq.size();
+		} finally {
 			lock.unlock();
 		}
 	}

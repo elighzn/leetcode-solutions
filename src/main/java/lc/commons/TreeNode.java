@@ -1,5 +1,8 @@
 package lc.commons;
 
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.StringJoiner;
 
 public class TreeNode {
@@ -21,20 +24,17 @@ public class TreeNode {
 	public static TreeNode deserialize(Integer[] nums) {
 		if (nums == null || nums.length == 0)
 			return null;
-
-		return deserialize(nums, new int[1]);
+		Deque<Integer> q = new LinkedList<>(Arrays.asList(nums));
+		return deserialize(q);
 	}
 
-	static TreeNode deserialize(Integer[] vals, int[] i) {
-		if (i[0] == vals.length)
-			return null;
-		Integer head = vals[i[0]++];
-		if (head == null)
-			return null;
+	static TreeNode deserialize(Deque<Integer> q) {
+		Integer v = q.poll();
+		if (v == null) return null;
 
-		TreeNode root = new TreeNode(head);
-		root.left = deserialize(vals, i);
-		root.right = deserialize(vals, i);
+		TreeNode root = new TreeNode(v);
+		root.left = deserialize(q);
+		root.right = deserialize(q);
 		return root;
 	}
 
@@ -49,7 +49,7 @@ public class TreeNode {
 			sj.add("null");
 			return;
 		}
-		sj.add(node.val + "");
+		sj.add(String.valueOf(node.val));
 		inorder(node.left, sj);
 		inorder(node.right, sj);
 	}

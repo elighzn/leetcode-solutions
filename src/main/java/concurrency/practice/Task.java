@@ -7,8 +7,8 @@ public class Task implements Delayed {
 	String name;
 	long startTime;
 
-	public Task(long startTime, String name) {
-		this.startTime = startTime;
+	public Task(long delay, String name) {
+		this.startTime = System.currentTimeMillis() + delay;
 		this.name = name;
 	}
 
