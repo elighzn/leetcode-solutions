@@ -1,4 +1,4 @@
-package leetcode.search;
+package leetcode.search.matrices.medium;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -37,7 +37,7 @@ import java.util.LinkedList;
  * 
  *         1 <= A.length = A[0].length <= 100 A[i][j] == 0 or A[i][j] == 1
  */
-public class ShortestBridge {
+public class LC934ShortestBridge {
 
     static class Solution {
         static final int[] DIRS = new int[] {0, 1, 0, -1, 0};
